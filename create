@@ -1,0 +1,33 @@
+#! /usr/bin/env bash
+echo "Starting To Create A Quick Wordpress Site and the plugin $1"
+
+if ! command -v wp &> /dev/null
+then
+    echo "wp cli could not be found"
+    exit 1
+fi
+
+mkdir -p public
+cd public
+
+wp core download
+
+cd ..
+mkdir -p bin
+
+FILE_URL="https://raw.githubusercontent.com/joshmkennedy/wpnow/main/bin/start-site"
+OUTPUT_FILE="bin/start-site"
+curl -L "$FILE_URL" -o "$OUTPUT_FILE"
+# Check if the download was successful
+if [ $? -eq 0 ]; then
+  echo "File downloaded successfully as $OUTPUT_FILE"
+else
+  echo "Failed to download file"
+fi
+echo "Creating the plugin $1"
+cd public/wp-content/plugins
+npx @wordpress/create-block $1 --template @wordpress/create-block-interactive-template
+
+echo -e "Finished!\n Run the following command to start the site"
+echo "./bin/start-site";
+echo -e "Then cd into public/wp-content/plugins/$1\n and run \`npm start\` to get a dev server going"   
