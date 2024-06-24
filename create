@@ -20,7 +20,8 @@ while [[ $# -gt 0 ]]; do
   shift # Move to the next argument
 done
 
-mkdir -p wp-content/plugins
+wp core download
+
 mkdir -p bin
 
 FILE_URL="https://raw.githubusercontent.com/joshmkennedy/wpnow/main/bin/start-site"
