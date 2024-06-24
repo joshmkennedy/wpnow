@@ -19,8 +19,8 @@
 			"pluginPath": "test-plugin/test-plugin.php"
 		},
 		{
-			"step": "wp-cli",
-			"command": "wp post create --post_title='Testing Plugin' --post_content=`cat $(pwd)post-content`"
+			"step": "runPHP",
+			"command": "<?php require 'wp-config.php'; wp_insert_post(['post_title'=>'Testing test-plugin', 'post_content'=>'<!-- wp:create-block/test-plugin /-->']);"
 		}
 	]
 }
