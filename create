@@ -40,6 +40,7 @@ curl -L "$FILE_URL" -o "$OUTPUT_FILE"
 # Check if the download was successful
 if [ $? -eq 0 ]; then
   echo "File downloaded successfully as $OUTPUT_FILE"
+	chmod +x "$OUTPUT_FILE"
 else
   echo "Failed to download file"
 fi
@@ -51,14 +52,15 @@ else
 	echo "Creating the plugin $name"
 	cd public/wp-content/plugins
 	npx @wordpress/create-block $plugin --template @wordpress/create-block-interactive-template
-	cd ../../
+	cd ../../../
 fi
 
 # Download and use the specified blueprint
+blueprint_url=""
 if [ -z $blueprint ]; then
 	#allows for a local blueprint to be used
 	echo "Using the default blueprint"
-	blue_print_url="https://raw.githubusercontent.com/joshmkennedy/wpnow/main/bp.json"
+	blueprint_url="https://raw.githubusercontent.com/joshmkennedy/wpnow/main/bp.json"
 else
 	if [[ "$blueprint" != "bp.json" ]]; then
 		blueprint_url=$blueprint	
@@ -69,7 +71,9 @@ if [ -z $blueprint_url ]; then
 	echo "Using local bp.json"
 else
 	echo "Downloading Blueprint ..."
-	curl -L "$blue_print_url" -o bp.json
+	curl -L "$blueprint_url" -o bp.json
+	#TODO: may want to add a flag to see if user wants this
+	curl -L "https://raw.githubusercontent.com/joshmkennedy/wpnow/main/post-content" -o post-content
 fi
 
 echo -e "Finished!\n Run the following command to start the site"

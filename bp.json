@@ -17,6 +17,10 @@
 		{
 			"step": "activatePlugin",
 			"pluginPath": "test-plugin/test-plugin.php"
+		},
+		{
+			"step": "wp-cli",
+			"command": "wp post create --post_title='Testing Plugin' --post_content=`cat post-content`"
 		}
 	]
 }
