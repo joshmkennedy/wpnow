@@ -25,10 +25,6 @@ while [[ $# -gt 0 ]]; do
   shift # Move to the next argument
 done
 
-
-mkdir -p public
-cd public
-
 wp core download
 
 cd ..
@@ -50,9 +46,9 @@ if [ -z $plugin ]; then
 	echo "Not Creating a plugin"
 else
 	echo "Creating the plugin $name"
-	cd public/wp-content/plugins
+	cd wp-content/plugins
 	npx @wordpress/create-block $plugin --template @wordpress/create-block-interactive-template
-	cd ../../../
+	cd ../../
 fi
 
 # Download and use the specified blueprint
@@ -69,13 +65,12 @@ fi
 
 if [ -z $blueprint_url ]; then
 	echo "Using local bp.json"
+	mv bp.json bin/bp.json
 else
 	echo "Downloading Blueprint ..."
-	curl -L "$blueprint_url" -o bp.json
-	#TODO: may want to add a flag to see if user wants this
-	curl -L "https://raw.githubusercontent.com/joshmkennedy/wpnow/main/post-content" -o post-content
+	curl -L "$blueprint_url" -o bin/bp.json
 fi
 
 echo -e "Finished!\n Run the following command to start the site"
 echo "./bin/start-site";
-echo -e "Then cd into public/wp-content/plugins/$plugin\n and run \`npm start\` to get a dev server going"   
+echo -e "Then cd into wp-content/plugins/$plugin\n and run \`npm start\` to get a dev server going"   
