@@ -7,6 +7,25 @@ then
     exit 1
 fi
 
+## CHECKING FLAGS
+# Initialize a variable to indicate if the flag is set
+# Loop through all the arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --plugin=*)
+      plugin="${1#*=}"
+      ;;
+		--blueprint)
+			blueprint="${1#*=}"
+			;;
+    *)
+			#
+      ;;
+  esac
+  shift # Move to the next argument
+done
+
+
 mkdir -p public
 cd public
 
@@ -24,10 +43,35 @@ if [ $? -eq 0 ]; then
 else
   echo "Failed to download file"
 fi
-echo "Creating the plugin $1"
-cd public/wp-content/plugins
-npx @wordpress/create-block $1 --template @wordpress/create-block-interactive-template
+
+
+if [ -z $plugin ]; then
+	echo "Not Creating a plugin"
+else
+	echo "Creating the plugin $name"
+	cd public/wp-content/plugins
+	npx @wordpress/create-block $plugin --template @wordpress/create-block-interactive-template
+	cd ../../
+fi
+
+# Download and use the specified blueprint
+if [ -z $blueprint ]; then
+	#allows for a local blueprint to be used
+	echo "Using the default blueprint"
+	blue_print_url="https://raw.githubusercontent.com/joshmkennedy/wpnow/main/bp.json"
+else
+	if [[ "$blueprint" != "bp.json" ]]; then
+		blueprint_url=$blueprint	
+	fi
+fi
+
+if [ -z $blueprint_url ]; then
+	echo "Using local bp.json"
+else
+	echo "Downloading Blueprint ..."
+	curl -L "$blue_print_url" -o bp.json
+fi
 
 echo -e "Finished!\n Run the following command to start the site"
 echo "./bin/start-site";
-echo -e "Then cd into public/wp-content/plugins/$1\n and run \`npm start\` to get a dev server going"   
+echo -e "Then cd into public/wp-content/plugins/$plugin\n and run \`npm start\` to get a dev server going"   
