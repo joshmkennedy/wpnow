@@ -1,11 +1,6 @@
 #! /usr/bin/env bash
 echo "Starting To Create A Quick Wordpress Site and the plugin $1"
 
-if ! command -v wp &> /dev/null
-then
-    echo "wp cli could not be found"
-    exit 1
-fi
 
 ## CHECKING FLAGS
 # Initialize a variable to indicate if the flag is set
@@ -25,9 +20,7 @@ while [[ $# -gt 0 ]]; do
   shift # Move to the next argument
 done
 
-wp core download
-
-cd ..
+mkdir -p wp-content/plugins
 mkdir -p bin
 
 FILE_URL="https://raw.githubusercontent.com/joshmkennedy/wpnow/main/bin/start-site"

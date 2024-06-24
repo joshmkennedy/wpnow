@@ -20,7 +20,7 @@
 		},
 		{
 			"step": "runPHP",
-			"command": "<?php require 'wp-config.php'; wp_insert_post(['post_title'=>'Testing test-plugin', 'post_content'=>'<!-- wp:create-block/test-plugin /-->']);"
+			"code": "<?php require 'wp-config.php'; wp_insert_post(['post_title'=>'Testing test-plugin', 'post_content'=>'<!-- wp:create-block/test-plugin /-->']);"
 		}
 	]
 }
